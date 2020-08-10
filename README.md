@@ -1,1 +1,1 @@
-# reposityList
+# repositoryList
