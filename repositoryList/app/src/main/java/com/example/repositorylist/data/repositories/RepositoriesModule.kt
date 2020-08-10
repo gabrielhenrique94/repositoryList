@@ -4,7 +4,7 @@ import org.koin.dsl.module
 
 object RepositoriesModule {
     val module = module {
-        single { RepositoriesCache() }
-        single { RepositoriesRepository(get(), get())  }
+        single<RepositoriesCache> { RepositoriesCacheImpl() }
+        single<RepositoriesRepository> { RepositoriesRepositoryImpl(get(), get()) }
     }
 }

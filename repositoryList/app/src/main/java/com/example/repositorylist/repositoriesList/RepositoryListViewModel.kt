@@ -21,7 +21,7 @@ class RepositoryListViewModel(private val useCase: ListRepositoriesUseCase) {
     }
 
     fun getFirstPage() {
-        useCase.page = 0
+        useCase.resetPageCount()
         useCase.execute()
             .subscribe({ list ->
                 repositoriesSubject.onNext(list)

@@ -2,8 +2,8 @@ package com.example.repositorylist.usecases
 
 import org.koin.dsl.module
 
-object UseCasesModule{
+object UseCasesModule {
     val module = module {
-        single { ListRepositoriesUseCase(get()) }
+        single<ListRepositoriesUseCase> { ListRepositoriesUseCaseImpl(get()) }
     }
 }
