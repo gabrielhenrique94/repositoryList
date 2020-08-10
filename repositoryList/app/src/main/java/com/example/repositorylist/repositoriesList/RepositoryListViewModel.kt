@@ -6,18 +6,32 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
 
-class RepositoryListViewModel(val useCase: ListRepositoriesUseCase) {
+class RepositoryListViewModel(private val useCase: ListRepositoriesUseCase) {
 
     private val repositoriesSubject: Subject<List<Repository>> = PublishSubject.create()
-    val respositoriesList: Observable<List<Repository>> = repositoriesSubject.hide()
+    val repositoriesList: Observable<List<Repository>> = repositoriesSubject.hide()
 
-    fun listRepositories() {
+    fun getNextPage() {
         useCase.execute()
-
             .subscribe({ list ->
                 repositoriesSubject.onNext(list)
             }, { t ->
                 t.printStackTrace()
             })
+    }
+
+    fun getFirstPage() {
+        useCase.page = 0
+        useCase.execute()
+            .subscribe({ list ->
+                repositoriesSubject.onNext(list)
+            }, { t ->
+                t.printStackTrace()
+            })
+    }
+
+    companion object {
+        const val INFINITE_SCROLL_OFFSET: Int = 10
+
     }
 }

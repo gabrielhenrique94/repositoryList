@@ -24,7 +24,12 @@ class RepositoryListAdapter : RecyclerView.Adapter<RepositoryViewHolder>() {
 
     fun add(repos: List<Repository>) {
         list.addAll(repos)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(list.lastIndex - repos.size, repos.size)
     }
 
+    fun clear() {
+        val size = list.size
+        list.clear()
+        notifyItemRangeChanged(0, size)
+    }
 }

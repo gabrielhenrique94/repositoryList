@@ -10,6 +10,7 @@ interface GithubApi {
     fun getRepositoryList(
         @Query("q") query: String,
         @Query("sort") sortBy: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("per_page") pageSize: Int
     ): Single<RepositoryListResponse>
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.repositorylist.R
+import com.example.repositorylist.utils.infiniteScrollListener
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,26 +19,28 @@ class RepositoryListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         initRecycler()
         initListeners()
-        listRepositories()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getFirstPage()
     }
 
     private fun initListeners() {
-        compositeDisposable.add(viewModel.respositoriesList
+        compositeDisposable.add(viewModel.repositoriesList
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 adapter.add(it)
             })
     }
 
-    private fun listRepositories() {
-        viewModel.listRepositories()
-    }
-
     private fun initRecycler() {
         repositoryList.layoutManager = LinearLayoutManager(this)
-        repositoryList.adapter = adapter;
+        repositoryList.adapter = adapter
+        repositoryList.infiniteScrollListener(RepositoryListViewModel.INFINITE_SCROLL_OFFSET) {
+            viewModel.getNextPage()
+        }
     }
 }
